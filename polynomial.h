@@ -14,7 +14,7 @@ void poly_derive(cell_t ** head);
  * @param xxx [in, out] address of the 1st polynomial's head pointer
  * @param xxx [in, out] address of the 2nd polynomial's head pointer
  */
-// poly_add();
+void poly_add(cell_t ** P1, cell_t ** P2);
 
 /** TO DO
  * @brief P1 * P2
