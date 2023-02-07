@@ -75,6 +75,7 @@ cell_t** LL_create_list_fromFileName(cell_t** head, char* filename)
     
         while ((stop = fscanf(file,"%lf %d",&monom.coef,&monom.degree)) != EOF)
         {
+
             cell = LL_create_cell(&monom);
             LL_add_cell(LL_search_prev(head, cell, monom_degree_cmp), cell);
         }

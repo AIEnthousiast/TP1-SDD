@@ -22,7 +22,7 @@ TEST(LL_init_list) {
 	REQUIRE ( list == NULL );
 }
 
-/*
+
 TEST(Poly_derive1) {  // exemple
 	cell_t *poly = NULL;
 	FILE   *file = NULL;
@@ -32,11 +32,11 @@ TEST(Poly_derive1) {  // exemple
 
 	file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file );
-	LL_create_list_fromFileName(&poly, "poly1.txt", monom_degree_cmp);
+	LL_create_list_fromFileName(&poly, "poly1.txt");
 	LL_print_list(file, poly, monom_print);
 	fclose(file);
-	// LL_print_list(stdout, poly, monom_print);
-	// printf("\n");
+	LL_print_list(stdout, poly, monom_print);
+	printf("\n");
 	CHECK( 0 == strcmp(buffer, "(5.00, 1) (4.00, 2) (5.00, 3) (6.00, 4) (3.00, 5) ") );
 
 	file = fmemopen(buffer, 1024, "w");
@@ -49,6 +49,7 @@ TEST(Poly_derive1) {  // exemple
 	CHECK( 0 == strcmp(buffer, "(5.00, 0) (8.00, 1) (15.00, 2) (24.00, 3) (15.00, 4) ") );
 	LL_free_list(&poly);
 }
+/*
 
 TEST(Poly_derive) { // test sur la derivation d'un polynome
 	cell_t *list;

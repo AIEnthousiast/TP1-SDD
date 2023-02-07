@@ -45,3 +45,16 @@ void monom_save2file(FILE * file, monom_t* monom)
 {
 	fprintf(file,"%.3lf %d\n",monom->coef, monom->degree);
 }
+
+
+/**
+ * @brief print in an human readable fashion the given monom_t
+ * @param [in] xxx file pointer of an output stream
+ * @param [in] xxx adress of a monomial
+ * 
+*/
+
+void monom_print(FILE * file, monom_t * monom)
+{
+    fprintf(file, "(%.2lf, %d) ",monom->coef,monom->degree);
+}

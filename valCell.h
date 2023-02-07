@@ -45,4 +45,15 @@ int monom_degree_cmp(monom_t* , monom_t*);
 
 void monom_save2file(FILE* , monom_t*);
 
+
+/**
+ * @brief print in an human readable fashion the given monom_t
+ * @param [in] xxx file pointer of an output stream
+ * @param [in] xxx adress of a monomial
+ * 
+*/
+
+
+void monom_print(FILE* , monom_t* );
+
 #endif

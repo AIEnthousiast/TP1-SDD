@@ -9,10 +9,21 @@
  * @brief compute 'in place' the derive of a polynomial 
  * @param [in, out] xxx address of a polynomial's head pointer
  */
-// poly_derive()
-// {
-// 	// TO DO
-// }
+void poly_derive(cell_t ** head)
+{
+	cell_t * current = *head;
+
+    if (current->val.degree == 0)
+    {
+        LL_del_cell(head);
+    }
+    while (current != NULL)
+    {
+        current->val.coef *= current->val.degree;
+        current->val.degree -= 1; 
+        current = current->next;
+    }
+}
 
 /** TO DO
  * @brief compute P1 = P1 + P2, P2 become empty
