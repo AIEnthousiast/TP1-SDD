@@ -59,12 +59,12 @@ void LL_add_cell(cell_t** previous, cell_t* newCell)
  * @param xxx fonction pointer for comparison of two cell's value
  * @return head pointer of the linked list
  */
-cell_t** LL_create_list_fromFileName(cell_t** head, char* filename, int (*comp)(monom_t*, monom_t*))
+cell_t** LL_create_list_fromFileName(cell_t** head, char* filename)
 {   
-    int stop;
+    int stop = !EOF;
     
-    monom_t monom1;
-    monom_t monom2;
+    monom_t monom;
+    cell_t* cell;
     FILE * file;
     LL_init_list(head);
 
@@ -72,21 +72,11 @@ cell_t** LL_create_list_fromFileName(cell_t** head, char* filename, int (*comp)(
 
     if (file != NULL)
     {
-        stop = fscanf(file,"%lf %d",&monom2.coef,&monom2.degree);
-
-        while (stop != EOF)
+    
+        while ((stop = fscanf(file,"%lf %d",&monom.coef,&monom.degree)) != EOF)
         {
-
-            monom1.coef = monom2.coef;
-            monom1.degree = monom2.degree;
-
-            while ((stop = fscanf(file, "%lf %d",&monom2.coef,&monom2.degree) )&& comp(&monom1,&monom2) == 0)
-            {
-                monom1.coef += monom2.coef;
-            }
-
-
-            LL_add_cell(head,LL_create_cell(&monom1));
+            cell = LL_create_cell(&monom);
+            LL_add_cell(LL_search_prev(head, cell, monom_degree_cmp), cell);
         }
 
         fclose(file);
@@ -164,7 +154,7 @@ cell_t** LL_search_prev(cell_t** head, cell_t* target, int (*comp)(monom_t* , mo
     cell_t** previous = head;
     cell_t* current = *head;
 
-    while (current != NULL && comp(&current->val,&target->val) <= 0 )
+    while (current != NULL && comp(&current->val,&target->val) < 0 )
     {
         
         previous = &(current->next);  //move the previous pointer inside of the data structure
@@ -211,5 +201,5 @@ void LL_free_list(cell_t** head)
         free(current);
         current = next;
     }
-    head = NULL;
+    *head = NULL;
 }

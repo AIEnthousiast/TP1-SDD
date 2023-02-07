@@ -53,7 +53,7 @@ void LL_init_list(cell_t **adrHeadPt);
  * @param xxx fonction pointer for comparison of two cell's value
  * @return head pointer of the linked list
  */
-cell_t ** LL_create_list_fromFileName(cell_t ** , char * , int (*)(monom_t*, monom_t*));
+cell_t ** LL_create_list_fromFileName(cell_t ** , char *);
 
 /**
  * @brief Print/Write the linked list on/to an output stream
