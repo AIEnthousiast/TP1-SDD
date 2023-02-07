@@ -74,13 +74,13 @@ cell_t** LL_create_list_fromFileName(cell_t** head, char* filename, int (*comp)(
     {
         stop = fscanf(file,"%lf %d",&monom2.coef,&monom2.degree);
 
-        while (!stop)
+        while (stop != EOF)
         {
 
             monom1.coef = monom2.coef;
-            monom2.coef = monom2.degree;
+            monom1.degree = monom2.degree;
 
-            while ((stop = fscanf(file, "%lf %d",&monom2.coef,&monom2.degree) )&& comp(&monom1,&monom2))
+            while ((stop = fscanf(file, "%lf %d",&monom2.coef,&monom2.degree) )&& comp(&monom1,&monom2) == 0)
             {
                 monom1.coef += monom2.coef;
             }
@@ -100,13 +100,13 @@ cell_t** LL_create_list_fromFileName(cell_t** head, char* filename, int (*comp)(
  * @param [in] xxx head pointer of a linked list
  * @param xxx fonction pointer for printing the data of a cell on an output stream
  */
-void LL_print_list(FILE* file, cell_t* head, void (*printer)(FILE* ,cell_t*))
+void LL_print_list(FILE* file, cell_t* head, void (*printer)(FILE* ,monom_t*))
 {
     cell_t* current = head;
 
     while (current != NULL)
     {
-        printer(file, current);
+        printer(file, &current->val);
         current = current->next;
     }
 }
@@ -142,15 +142,11 @@ void LL_save_list_toFile(cell_t* head, FILE * file, void(*writer)(FILE*, monom_t
 void LL_save_list_toFileName(cell_t* head, char* filename, void (*writer)(FILE* , monom_t*))
 {
     FILE * file = fopen(filename, "w");
-    cell_t* current = head;
+
     
     if (file != NULL)
     {
-        while (current != NULL)
-        {
-            writer(file, &current->val);
-            current = current->next;
-        }
+        LL_save_list_toFile(head, file, writer);
         fclose(file);
     }
 }
@@ -215,4 +211,5 @@ void LL_free_list(cell_t** head)
         free(current);
         current = next;
     }
+    head = NULL;
 }
