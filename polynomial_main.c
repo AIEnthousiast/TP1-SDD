@@ -59,6 +59,7 @@ TEST(Poly_derive) { // test sur la derivation d'un polynome
 */
 
 
+
 TEST(Poly_addition) { // test sur l'addition de deux polymones
 	cell_t *P1 = NULL;
 	char   buffer[1024];
@@ -117,7 +118,7 @@ TEST(Poly_addition) { // test sur l'addition de deux polymones
 	LL_free_list(&P2);
 
 }
-*/
+
 
 TEST(Poly_produit) { // test sur le calcul du produit de deux polymones
 	cell_t * prod;
