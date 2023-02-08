@@ -22,6 +22,7 @@ void poly_derive(cell_t ** head);
  * @param xxx [in, out] head pointer of the 2nd polynomial
  * @return P1*P2
  */
-// poly_prod();
+
+cell_t* poly_prod(cell_t* poly1, cell_t* poly2);
 
 #endif

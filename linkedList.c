@@ -152,8 +152,12 @@ void LL_save_list_toFileName(cell_t* head, char* filename, void (*writer)(FILE* 
  */
 cell_t** LL_search_prev(cell_t** head, cell_t* target, int (*comp)(monom_t* , monom_t*))
 {
+
     cell_t** previous = head;
-    cell_t* current = *head;
+    cell_t* current;
+    
+   
+    current = *head;
 
     while (current != NULL && comp(&current->val,&target->val) < 0 )
     {
@@ -161,6 +165,8 @@ cell_t** LL_search_prev(cell_t** head, cell_t* target, int (*comp)(monom_t* , mo
         previous = &(current->next);  //move the previous pointer inside of the data structure
         current = current->next;
     }
+
+    
 
     return previous;
 }

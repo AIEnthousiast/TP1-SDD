@@ -23,7 +23,7 @@ TEST(LL_init_list) {
 }
 
 
-TEST(Poly_derive1) {  // exemple
+TEST(Poly_derive1) {  // exemple  // Réviser le code
 	cell_t *poly = NULL;
 	FILE   *file = NULL;
 	char   buffer[1024];
@@ -63,14 +63,46 @@ TEST(Poly_addition) { // test sur l'addition de deux polymones
 
 	//TO DO
 }
-
+*/
 
 TEST(Poly_produit) { // test sur le calcul du produit de deux polymones
-	cell_t *list;
+	cell_t * prod;
 
-	//TO DO
+	cell_t * poly1 = NULL;
+	cell_t * poly2 = NULL;
+	FILE * file = NULL;
+
+	char buffer[1024];
+
+	file = fmemopen(buffer, 1024, "w");
+	REQUIRE(NULL != file);
+
+	LL_create_list_fromFileName(&poly1,"poly1.txt");
+	REQUIRE(NULL != poly1);
+
+	LL_create_list_fromFileName(&poly2,"poly2.txt");
+	REQUIRE(NULL != poly2);
+
+	
+	prod = poly_prod(poly1,poly2);
+
+	REQUIRE(NULL != prod);
+
+	LL_print_list(file,prod,monom_print);
+
+	fclose(file);
+
+	LL_save_list_toFileName(prod,"prod12.txt",monom_print);
+
+
+	LL_free_list(&poly1);
+	LL_free_list(&poly2);
+	LL_free_list(&prod);
+
 }
 
+
+/*
 
 TEST(LL_save_list_toFileName) { // test pour l'ecriture d'un polynome dans un fichier
 	cell_t *list;
