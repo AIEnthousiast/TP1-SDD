@@ -23,7 +23,7 @@ TEST(LL_init_list) {
 }
 
 
-TEST(Poly_derive1) {  // exemple  // Réviser le code
+TEST(Poly_derive1) {  // exemple  
 	cell_t *poly = NULL;
 	FILE   *file = NULL;
 	char   buffer[1024];
@@ -49,14 +49,28 @@ TEST(Poly_derive1) {  // exemple  // Réviser le code
 	CHECK( 0 == strcmp(buffer, "(5.00, 0) (8.00, 1) (15.00, 2) (24.00, 3) (15.00, 4) ") );
 	LL_free_list(&poly);
 }
-/*
 
-TEST(Poly_derive) { // test sur la derivation d'un polynome
-	cell_t *list;
+TEST(Poly_derive) { // test sur la derivation d'un polynome avec une constante non nulle
+	cell_t *poly = NULL;
 
-	//TO DO
+	FILE * file = NULL;
+	char buffer[1024];
+
+	file = fmemopen(buffer, 1024, "w");
+	REQUIRE(NULL!= file);
+
+	LL_create_list_fromFileName(&poly,"polyDeriv2.txt");
+
+	poly_derive(&poly);
+
+	LL_print_list(file,poly,monom_print);
+	fclose(file);
+
+	CHECK( 0 == strcmp(buffer,"(2.00, 0) (6.00, 1) (12.00, 2) ") );
+
+	LL_free_list(&poly);
 }
-*/
+
 
 
 
@@ -157,14 +171,54 @@ TEST(Poly_produit) { // test sur le calcul du produit de deux polymones
 }
 
 
-/*
+
 
 TEST(LL_save_list_toFileName) { // test pour l'ecriture d'un polynome dans un fichier
-	cell_t *list;
+	cell_t *poly = NULL;
+	cell_t *poly_retrieve = NULL;
 
-	//TO DO
+	
+	monom_t m1 = {4.0, 2};
+	cell_t *cell_1 = LL_create_cell(&m1);
+	monom_t m2 = {-2.0, 5};
+	cell_t *cell_2 = LL_create_cell(&m2);
+	monom_t m3 = {4.5, 6};
+	cell_t *cell_3 = LL_create_cell(&m3);
+	monom_t m4 = {-4.0, 17};
+	cell_t *cell_4 = LL_create_cell(&m4);
+	monom_t m5 = {5.0, 22};
+	cell_t *cell_5 = LL_create_cell(&m5);
+
+	char buffer[1024];
+	FILE * file = fmemopen(buffer,1024,"w");
+
+	REQUIRE(file != NULL);
+
+
+
+	LL_add_cell(&poly, cell_1);
+	LL_add_cell(LL_search_prev(&poly, cell_2, monom_degree_cmp), cell_2);
+	LL_add_cell(LL_search_prev(&poly, cell_3, monom_degree_cmp), cell_3);
+	LL_add_cell(LL_search_prev(&poly, cell_4, monom_degree_cmp), cell_4);
+	LL_add_cell(LL_search_prev(&poly, cell_5, monom_degree_cmp), cell_5);
+
+
+	
+	LL_save_list_toFileName(poly,"PolySave.txt",monom_save2file);
+	
+
+	LL_create_list_fromFileName(&poly_retrieve,"PolySave.txt");
+
+	LL_print_list(file,poly_retrieve,monom_print);
+
+	fclose(file);
+
+	CHECK( 0 == strcmp(buffer,"(4.00, 2) (-2.00, 5) (4.50, 6) (-4.00, 17) (5.00, 22) "));
+
+	LL_free_list(&poly);
+
 }
-*/
+
 
 END_TEST_GROUP(polynomial)
 

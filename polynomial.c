@@ -12,12 +12,15 @@
  */
 void poly_derive(cell_t ** head)
 {
-	cell_t * current = *head;
+	cell_t * current;
 
-    if (current->val.degree == 0)
+    if ((*head)->val.degree == 0)
     {
         LL_del_cell(head);
     }
+
+    current = *head;
+
     while (current != NULL)
     {
         current->val.coef *= current->val.degree;

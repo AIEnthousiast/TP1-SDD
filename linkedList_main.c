@@ -85,7 +85,7 @@ TEST(LL_add_cell) {
 	REQUIRE ( new != NULL );
 
 	LL_add_cell(&list, new);
-	CHECK( list == new ); 
+	CHECK( list == new );  // L'insertion en tête s'est-elle bien passée?
 
 	char buffer[1024];
 	FILE * file = fmemopen(buffer, 1024, "w");
@@ -95,16 +95,18 @@ TEST(LL_add_cell) {
 	fclose(file);
 	CHECK( 0 == strcmp(buffer, "3.245 17\n") ); 
 
-	free(new); // liberer la liste
-	list = NULL;
+	LL_free_list(&list); // liberer la liste
+
 }
 
 
 
 // test d'insertion de cellule - liste a n cellules
-TEST(LL_add_celln) {
+TEST(LL_add_celln) { 
 
 	cell_t *list = NULL;
+
+
 	monom_t m1 = {3.0, 17};
 	cell_t *cell1 = LL_create_cell(&m1);
 
@@ -120,9 +122,9 @@ TEST(LL_add_celln) {
 
 	REQUIRE ( cell1 != NULL );
 
-	LL_add_cell(&list, cell1);
-	CHECK( list == cell1 ); 
 
+	// Ajout successif de cellules dans l'ordre indiqué 
+	LL_add_cell(&list, cell1);
 	LL_add_cell(LL_search_prev(&list, cell2, monom_degree_cmp), cell2);
 	LL_add_cell(LL_search_prev(&list, cell3, monom_degree_cmp), cell3);
 	LL_add_cell(LL_search_prev(&list, cell4, monom_degree_cmp), cell4);
@@ -134,10 +136,10 @@ TEST(LL_add_celln) {
 
 	LL_save_list_toFile(list, file, monom_save2file);
 	fclose(file);
+
 	CHECK( 0 == strcmp(buffer, "8.000 3\n2.000 5\n4.000 6\n3.000 17\n") ); 
 
 	LL_free_list(&list); // liberer la liste
-	list = NULL;
 }
 
 // test pour la creation d'un polynome a partir d'un fichier - exemple
@@ -172,8 +174,6 @@ TEST(LL_create_list_fromFileName) {
 	CHECK( 0 == strcmp(buffer, "5.678 3\n2.400 5\n5.000 8\n2.405 10\n") ); 
 
 	LL_free_list(&list); // liberer la liste
-	list = NULL;
-
 }
 
 
@@ -192,31 +192,39 @@ TEST(LL_print_list) { // test pour l'affichage d'un polynome sur un flux de sort
 	CHECK( 0 == strcmp(buffer, "5.678 3\n2.400 5\n5.000 8\n2.405 10\n") ); 
 
 	LL_free_list(&list); // liberer la liste
-	list = NULL;
 }
 
 
-TEST(LL_search_prev) { // test pour la fonction de recherche d'une valeur
+TEST(LL_search_prevIn) { // test pour la fonction de recherche d'une valeur contenue dans la liste
+
 	cell_t *list = NULL;
+
 	monom_t m1 = {3.0, 17};
 	cell_t *cell1 = LL_create_cell(&m1);
+
+	REQUIRE ( cell1 != NULL );
 
 	monom_t m2 = {2.0, 5};
 	cell_t *cell2 = LL_create_cell(&m2);
 
+	REQUIRE ( cell2 != NULL );
+
 	monom_t m3 = {4.0, 6};
 	cell_t *cell3 = LL_create_cell(&m3);
+
+	REQUIRE ( cell3 != NULL );
 
 	monom_t m4 = {8.0, 3};
 	cell_t *cell4 = LL_create_cell(&m4);
 
+	REQUIRE ( cell4 != NULL );
+
 	cell_t **previous;
-
-
-	REQUIRE ( cell1 != NULL );
+	
 
 	LL_add_cell(&list, cell1);
-	CHECK( list == cell1 ); 
+
+	CHECK(list == cell1);  // Insertion bien réalisée en tête
 
 	LL_add_cell(LL_search_prev(&list, cell2, monom_degree_cmp), cell2);
 	LL_add_cell(LL_search_prev(&list, cell3, monom_degree_cmp), cell3);
@@ -225,11 +233,110 @@ TEST(LL_search_prev) { // test pour la fonction de recherche d'une valeur
 	previous = LL_search_prev(&list, cell3, monom_degree_cmp);
 	
 	CHECK( (*previous) == cell3);
+
+
+	LL_free_list(&list);
+}
+
+TEST(LL_search_prevFirst) { // test pour la fonction de recherche d'une valeur inférieure à toutes celles d'une liste
+							// Attendu: un pointeUr vers le pointeur de tête
+
+	cell_t *list = NULL;
+
+	monom_t m1 = {3.0, 17};
+	cell_t *cell1 = LL_create_cell(&m1);
+
+	REQUIRE ( cell1 != NULL );
+
+	monom_t m2 = {2.0, 5};
+	cell_t *cell2 = LL_create_cell(&m2);
+
+	REQUIRE ( cell2 != NULL );
+
+	monom_t m3 = {4.0, 6};
+	cell_t *cell3 = LL_create_cell(&m3);
+
+	REQUIRE ( cell3 != NULL );
+
+	monom_t m4 = {8.0, 3};
+	cell_t *cell4 = LL_create_cell(&m4);
+
+	REQUIRE ( cell4 != NULL );
+
+	cell_t **previous;
+
+	monom_t reserchedValue = {1.0, 1};
+	cell_t * researched = LL_create_cell(&reserchedValue);
+	
+
+	LL_add_cell(&list, cell1);
+
+	CHECK(list == cell1);  // Insertion bien réalisée en tête
+
+	LL_add_cell(LL_search_prev(&list, cell2, monom_degree_cmp), cell2);
+	LL_add_cell(LL_search_prev(&list, cell3, monom_degree_cmp), cell3);
+	LL_add_cell(LL_search_prev(&list, cell4, monom_degree_cmp), cell4);
+
+	previous = LL_search_prev(&list, researched, monom_degree_cmp);
+	
+	CHECK( (*previous) == list);
+
+
+	LL_free_list(&list);
+}
+
+TEST(LL_search_prevLast) { // test pour la fonction de recherche d'une valeur supérieure à toutes celles d'une liste
+							// Attendu: un pointeur vers NULL
+
+	cell_t *list = NULL;
+
+	monom_t m1 = {3.0, 17};
+	cell_t *cell1 = LL_create_cell(&m1);
+
+	REQUIRE ( cell1 != NULL );
+
+	monom_t m2 = {2.0, 5};
+	cell_t *cell2 = LL_create_cell(&m2);
+
+	REQUIRE ( cell2 != NULL );
+
+	monom_t m3 = {4.0, 6};
+	cell_t *cell3 = LL_create_cell(&m3);
+
+	REQUIRE ( cell3 != NULL );
+
+	monom_t m4 = {8.0, 3};
+	cell_t *cell4 = LL_create_cell(&m4);
+
+	REQUIRE ( cell4 != NULL );
+
+	cell_t **previous;
+
+	monom_t reserchedValue = {-1.0, 20};
+	cell_t * researched = LL_create_cell(&reserchedValue);
+	
+
+	LL_add_cell(&list, cell1);
+
+	CHECK(list == cell1);  // Insertion bien réalisée en tête
+
+	LL_add_cell(LL_search_prev(&list, cell2, monom_degree_cmp), cell2);
+	LL_add_cell(LL_search_prev(&list, cell3, monom_degree_cmp), cell3);
+	LL_add_cell(LL_search_prev(&list, cell4, monom_degree_cmp), cell4);
+
+	previous = LL_search_prev(&list, researched, monom_degree_cmp);
+	
+
+	CHECK( (*previous) == NULL);
+
+
+	LL_free_list(&list);
 }
 
 
-TEST(LL_del_cell) { // test de la suppression d'un element
+TEST(LL_del_cell) { // test de la suppression d'un element q
 
+	// Création d'une liste à 4 éléments
 	cell_t *list = NULL;
 	monom_t m1 = {3.0, 17};
 	cell_t *cell1 = LL_create_cell(&m1);
@@ -246,11 +353,7 @@ TEST(LL_del_cell) { // test de la suppression d'un element
 	cell_t **previous;
 
 
-	REQUIRE ( cell1 != NULL );
-
 	LL_add_cell(&list, cell1);
-	CHECK( list == cell1 ); 
-
 	LL_add_cell(LL_search_prev(&list, cell2, monom_degree_cmp), cell2);
 	LL_add_cell(LL_search_prev(&list, cell3, monom_degree_cmp), cell3);
 	LL_add_cell(LL_search_prev(&list, cell4, monom_degree_cmp), cell4);
@@ -258,14 +361,13 @@ TEST(LL_del_cell) { // test de la suppression d'un element
 	previous = LL_search_prev(&list, cell3, monom_degree_cmp);
 	LL_del_cell(previous);
 
-
 	char buffer[1024];
 	FILE * file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file);
 
 	LL_save_list_toFile(list, file, monom_save2file);
 	fclose(file);
-	LL_save_list_toFileName(list, "toto2.txt", monom_save2file);
+	
 	CHECK( 0 == strcmp(buffer, "8.000 3\n2.000 5\n3.000 17\n") ); 
 
 	LL_free_list(&list); // liberer la liste
@@ -287,8 +389,6 @@ TEST(LL_free_list) { // test de la liberation de liste
 
 	monom_t m4 = {8.0, 3};
 	cell_t *cell4 = LL_create_cell(&m4);
-
-
 
 	REQUIRE ( cell1 != NULL );
 
