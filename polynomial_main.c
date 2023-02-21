@@ -16,27 +16,24 @@ BEGIN_TEST_GROUP(polynomial)
 TEST(LL_init_list) {
 	cell_t *list;
 
-	printf("\nInitialization of the linked list : \n");
 	LL_init_list(&list);
 
 	REQUIRE ( list == NULL );
 }
 
 
-TEST(Poly_derive1) {  // exemple  
+TEST(Poly_derive1) {  // test sur la derivation d'un polynome  
 	cell_t *poly = NULL;
 	FILE   *file = NULL;
 	char   buffer[1024];
 
-	printf("\nDerive of polynomial 1 : \n");
 
 	file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file );
 	LL_create_list_fromFileName(&poly, "poly1.txt");
 	LL_print_list(file, poly, monom_print);
 	fclose(file);
-	LL_print_list(stdout, poly, monom_print);
-	printf("\n");
+
 	CHECK( 0 == strcmp(buffer, "(5.00, 1) (4.00, 2) (5.00, 3) (6.00, 4) (3.00, 5) ") );
 
 	file = fmemopen(buffer, 1024, "w");
@@ -44,8 +41,6 @@ TEST(Poly_derive1) {  // exemple
 	poly_derive(&poly);
 	LL_print_list(file, poly, monom_print);
 	fclose(file);
-	// LL_print_list(stdout, poly, monom_print);
-	// printf("\n");
 	CHECK( 0 == strcmp(buffer, "(5.00, 0) (8.00, 1) (15.00, 2) (24.00, 3) (15.00, 4) ") );
 	LL_free_list(&poly);
 }
@@ -112,7 +107,6 @@ TEST(Poly_addition) { // test sur l'addition de deux polymones
 	LL_add_cell(LL_search_prev(&P2, cellP2_4, monom_degree_cmp), cellP2_4);
 	LL_add_cell(LL_search_prev(&P2, cellP2_5, monom_degree_cmp), cellP2_5);
 
-	// Résultat: "4.000 2\n8.000 3\n8.500 6\n-1.000 17\n5.000 22\n"
 	poly_add(&P1, &P2);
 
 	
@@ -124,7 +118,6 @@ TEST(Poly_addition) { // test sur l'addition de deux polymones
 
 	CHECK(0 == strcmp(buffer, "(4.00, 2) (8.00, 3) (8.50, 6) (-1.00, 17) (5.00, 22) "));
 
-
 	//Vérifier que P2 est bien un pointeur vide.
 	CHECK(P2 == NULL);
 
@@ -132,6 +125,37 @@ TEST(Poly_addition) { // test sur l'addition de deux polymones
 	LL_free_list(&P2);
 
 }
+
+TEST(Poly_addition2) {
+	// Test pour deux polynomes qui s'annulent completement
+	cell_t *P1 = NULL;
+
+	monom_t m1 = {8.0, 3};
+	cell_t *cellP1_1 = LL_create_cell(&m1);
+	monom_t m2 = {-2.0, 5};
+	cell_t *cellP1_2 = LL_create_cell(&m2);
+
+	LL_add_cell(&P1, cellP1_1);
+	LL_add_cell(LL_search_prev(&P1, cellP1_2, monom_degree_cmp), cellP1_2);
+
+
+	cell_t *P2 = NULL;
+	monom_t m1_2 = {-8.0, 3};
+	cell_t *cellP2_1 = LL_create_cell(&m1_2);
+	monom_t m2_2 = {2.0, 5};
+	cell_t *cellP2_2 = LL_create_cell(&m2_2);
+
+	LL_add_cell(&P2, cellP2_1);
+	LL_add_cell(LL_search_prev(&P2, cellP2_2, monom_degree_cmp), cellP2_2);
+
+	poly_add(&P1, &P2);
+
+	CHECK(P1 == NULL);
+	CHECK(P2 == NULL);
+
+	LL_free_list(&P1);
+	LL_free_list(&P2);
+}	
 
 
 TEST(Poly_produit) { // test sur le calcul du produit de deux polymones
