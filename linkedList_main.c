@@ -69,6 +69,8 @@ TEST(LL_create_cell) { // test de creation de cellule
 	monom_save2file(file, &(new->val));
 	fclose(file);
 	CHECK( 0 == strcmp(buffer, "3.245 17\n") ); 
+
+	LL_free_list(&new);
 }
 
 
@@ -283,6 +285,7 @@ TEST(LL_search_prevFirst) { // test pour la fonction de recherche d'une valeur i
 
 
 	LL_free_list(&list);
+	LL_free_list(&researched);
 }
 
 TEST(LL_search_prevLast) { // test pour la fonction de recherche d'une valeur supérieure à toutes celles d'une liste
@@ -331,6 +334,7 @@ TEST(LL_search_prevLast) { // test pour la fonction de recherche d'une valeur su
 
 
 	LL_free_list(&list);
+	LL_free_list(&researched);
 }
 
 
