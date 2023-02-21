@@ -105,44 +105,46 @@ cell_t* poly_prod(cell_t* poly1, cell_t* poly2)
 
     int stop = 0;
 
-    
-    while (!stop)
+    if (poly1 != NULL && poly2 != NULL)
     {
-        monom.degree = current_degree;
-        monom.coef = 0.00;
-
-        current_on_1 = poly1;
-    
-        while (current_on_1 != NULL && current_on_1->val.degree <= current_degree)
+        while (!stop)
         {
-            current_on_2 = poly2;
+            monom.degree = current_degree;
+            monom.coef = 0.00;
 
-            while (current_on_2 != NULL && current_on_2->val.degree < current_degree - current_on_1->val.degree)
+            current_on_1 = poly1;
+        
+            while (current_on_1 != NULL && current_on_1->val.degree <= current_degree)
             {
-                current_on_2 = current_on_2->next;
+                current_on_2 = poly2;
+
+                while (current_on_2 != NULL && current_on_2->val.degree < current_degree - current_on_1->val.degree)
+                {
+                    current_on_2 = current_on_2->next;
+                }
+
+                if (current_on_2 != NULL && current_on_2->val.degree + current_on_1->val.degree == current_degree)
+                {
+                    monom.coef += current_on_1->val.coef * current_on_2->val.coef;
+                }
+
+                current_on_1 = current_on_1->next;
             }
 
-            if (current_on_2 != NULL && current_on_2->val.degree + current_on_1->val.degree == current_degree)
+            
+            if (monom.coef != 0.0)
             {
-                monom.coef += current_on_1->val.coef * current_on_2->val.coef;
-            }
+                monom_cell = LL_create_cell(&monom);
+                LL_add_cell(LL_search_prev(&head,monom_cell,monom_degree_cmp),monom_cell);
+            }        
 
-            current_on_1 = current_on_1->next;
+            current_degree += 1;
+        
+
+            stop = (current_on_1 == NULL && current_on_2 == NULL);
+            
+            
         }
-
-        
-        if (monom.coef != 0.0)
-        {
-            monom_cell = LL_create_cell(&monom);
-            LL_add_cell(LL_search_prev(&head,monom_cell,monom_degree_cmp),monom_cell);
-        }        
-
-        current_degree += 1;
-    
-
-        stop = (current_on_1 == NULL && current_on_2 == NULL);
-        
-        
     }
 
     return head;

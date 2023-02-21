@@ -194,6 +194,41 @@ TEST(Poly_produit) { // test sur le calcul du produit de deux polymones
 
 }
 
+TEST(Poly_produit_nul) {
+	// Produit par un polynomes nul
+	cell_t *P1 = NULL;
+	cell_t * prod = NULL;
+
+	/*monom_t m1 = {0, 0};
+	cell_t *cellP1_1 = LL_create_cell(&m1);
+	monom_t m2 = {-2.0, 5};
+	cell_t *cellP1_2 = LL_create_cell(&m2);
+
+	LL_add_cell(&P1, cellP1_1);
+	LL_add_cell(LL_search_prev(&P1, cellP1_2, monom_degree_cmp), cellP1_2);*/
+
+
+	cell_t *P2 = NULL;
+	monom_t m1_2 = {-8.0, 3};
+	cell_t *cellP2_1 = LL_create_cell(&m1_2);
+	monom_t m2_2 = {2.0, 5};
+	cell_t *cellP2_2 = LL_create_cell(&m2_2);
+
+	LL_add_cell(&P2, cellP2_1);
+	LL_add_cell(LL_search_prev(&P2, cellP2_2, monom_degree_cmp), cellP2_2);
+
+	prod = poly_prod(P1,P2);
+
+	/*CHECK(P1 == NULL);
+	CHECK(P2 == NULL);*/
+	printf("----\n");
+	LL_print_list(stdout,prod,monom_print);
+	printf("----\n");
+
+	LL_free_list(&P1);
+	LL_free_list(&P2);
+	LL_free_list(&prod);
+}	
 
 
 
