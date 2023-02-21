@@ -216,6 +216,7 @@ TEST(LL_save_list_toFileName) { // test pour l'ecriture d'un polynome dans un fi
 	CHECK( 0 == strcmp(buffer,"(4.00, 2) (-2.00, 5) (4.50, 6) (-4.00, 17) (5.00, 22) "));
 
 	LL_free_list(&poly);
+	LL_free_list(&poly_retrieve);
 
 }
 
