@@ -69,7 +69,10 @@ TEST(Poly_derive) { // test sur la derivation d'un polynome avec une constante n
 
 
 
-TEST(Poly_addition) { // test sur l'addition de deux polymones
+TEST(Poly_addition) { 
+	// Test pour l'addition de deux polynômes. Correspond aux cas particuliers suivants :
+	// Liste P1 plus grande que P2. Certains mônômes s'annulent
+	// Certains degrés existent dans P1 et pas dans P2 (et inversement)
 	cell_t *P1 = NULL;
 	char   buffer[1024];
 	FILE *file;
@@ -151,6 +154,46 @@ TEST(Poly_addition2) {
 	poly_add(&P1, &P2);
 
 	CHECK(P1 == NULL);
+	CHECK(P2 == NULL);
+
+	LL_free_list(&P1);
+	LL_free_list(&P2);
+}	
+
+
+TEST(Poly_addition3) {
+	// Test pour l'addition de deux polynômes. Correspond au cas particulier suivant : 
+	// liste P2 plus grande que P1
+	cell_t *P1 = NULL;
+	char   buffer[1024];
+	FILE *file;
+
+	monom_t m1 = {8.0, 3};
+	cell_t *cellP1_1 = LL_create_cell(&m1);
+
+	LL_add_cell(&P1, cellP1_1);
+
+
+	cell_t *P2 = NULL;
+	monom_t m1_2 = {4.0, 3};
+	cell_t *cellP2_1 = LL_create_cell(&m1_2);
+	monom_t m2_2 = {2.0, 5};
+	cell_t *cellP2_2 = LL_create_cell(&m2_2);
+
+	LL_add_cell(&P2, cellP2_1);
+	LL_add_cell(LL_search_prev(&P2, cellP2_2, monom_degree_cmp), cellP2_2);
+
+	poly_add(&P1, &P2);
+
+
+	file = fmemopen(buffer, 1024, "w");
+	REQUIRE ( NULL != file );
+	LL_print_list(file, P1, monom_print);
+	fclose(file);
+
+	CHECK(0 == strcmp(buffer, "(12.00, 3) (2.00, 5) "));
+
+	//Vérifier que P2 est bien un pointeur vide.
 	CHECK(P2 == NULL);
 
 	LL_free_list(&P1);
