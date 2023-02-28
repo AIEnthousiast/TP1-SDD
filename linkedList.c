@@ -17,7 +17,7 @@ void LL_init_list(cell_t **adrHeadPt)
 }
 
 
-/** TO DO
+/** 
  * @brief Create a new cell for linked list from its data 
  * @param [in] xxx address of the data
  * @return address of the new cell
@@ -38,7 +38,7 @@ cell_t * LL_create_cell(monom_t * data)
 }
 
 
-/** TO DO
+/** 
  * @brief Insert a cell into a linked list at the given position
  * @param [in, out]  xxx address of previous pointer of the cell
  * @param [in]  xxx address of the cell to be added to the linked list
@@ -51,7 +51,7 @@ void LL_add_cell(cell_t** previous, cell_t* newCell)
 }
 
 
-/** TO DO
+/** 
  * @brief Create a linked list from a file
  * @param [in, out] xxx address of head pointer of a linked list
  * @param [in] xxx name of a file containing the data for a linked list
@@ -84,7 +84,7 @@ cell_t** LL_create_list_fromFileName(cell_t** head, char* filename)
     return head;
 }
 
-/** TO DO
+/** 
  * @brief Print/Write the linked list on/to an output stream
  * @param [in] xxx file pointer of an output stream
  * @param [in] xxx head pointer of a linked list
@@ -123,7 +123,7 @@ void LL_save_list_toFile(cell_t* head, FILE * file, void(*writer)(FILE*, monom_t
 }
 
 
-/** TO DO
+/** 
  * @brief Save a linked list into a file
  * @param [in, out] xxx head pointer of a linked list
  * @param [in] xxx name of the backup file
@@ -142,7 +142,7 @@ void LL_save_list_toFileName(cell_t* head, char* filename, void (*writer)(FILE* 
 }
 
 
-/** TO DO
+/** 
  * @brief Search a value in a linked list, and return the address of the previous pointer
  * @param [in] xxx address of the head pointer
  * @param [in] xxx address of the value to search
@@ -171,7 +171,7 @@ cell_t** LL_search_prev(cell_t** head, cell_t* target, int (*comp)(monom_t* , mo
 }
 
 
-/** TO DO
+/** 
  * @brief Delete a cell from a linked list
  * @param [in, out] xxx address of the previous pointer of the cell to delete
  */
@@ -192,7 +192,7 @@ void LL_del_cell(cell_t** previous)
 }
 
 
-/** TO DO
+/** 
  * @brief Free the memory location occupied by a linked list
  * @param [in, out] xxx address of head pointer of a linked list
  */

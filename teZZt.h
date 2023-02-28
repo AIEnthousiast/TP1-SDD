@@ -15,7 +15,7 @@
 // DO NOT COMPILE with -ansi -pedantic options
 // https://gcc.gnu.org/onlinedocs/gcc/Nested-Functions.html
 
-// TO DO : 
+//  : 
 // * add support for memory hooks
 //   https://www.gnu.org/software/libc/manual/html_node/Hooks-for-Malloc.html
 // * __tezzt__exit_program_with_report() can be recorded more than one (one by group)

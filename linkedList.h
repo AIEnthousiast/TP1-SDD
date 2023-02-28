@@ -8,7 +8,7 @@
 
 #include "valCell.h"
 
-/** TO DO
+/** 
  * @struct cell_t
  * @brief Data structure of the linked list's cell
  * 2 fields :
@@ -30,7 +30,7 @@ typedef struct cell_t
  */
 void LL_init_list(cell_t **adrHeadPt);
 
-/** TO DO
+/** 
  * @brief create a new cell for linked list from its data 
  * @param [in] xxx address of the data
  * @return address of the new cell
@@ -38,7 +38,7 @@ void LL_init_list(cell_t **adrHeadPt);
  
  cell_t* LL_create_cell(monom_t* );
 
-/** TO DO
+/** 
  * @brief Insert a cell into a linked list at the given position
  * @param [in, out]  xxx address of previous pointer of the cell
  * @param [in]  xxx address of the cell to be added to the linked list
@@ -46,7 +46,7 @@ void LL_init_list(cell_t **adrHeadPt);
  
  void LL_add_cell(cell_t ** , cell_t *);
 
-/** TO DO
+/** 
  * @brief Create a linked list from a file
  * @param [in, out] xxx address of head pointer of a linked list
  * @param [in] xxx name of a file containing the data for a linked list
@@ -73,7 +73,7 @@ void LL_print_list(FILE* , cell_t*, void (*)(FILE*, monom_t*));
 
 void LL_save_list_toFile(cell_t*, FILE *, void(*)(FILE*, monom_t*));
 
-/** TO DO
+/** 
  * @brief Save a linked list into a file
  * @param [in, out] xxx head pointer of a linked list
  * @param [in] xxx name of the backup file
@@ -82,7 +82,7 @@ void LL_save_list_toFile(cell_t*, FILE *, void(*)(FILE*, monom_t*));
  
  void LL_save_list_toFileName(cell_t* , char *, void (*)(FILE *, monom_t*));
 
-/** TO DO
+/** 
  * @brief Search a value in a linked list, and return the address of the previous pointer
  * @param [in] xxx address of the head pointer
  * @param [in] xxx address of the value to search
@@ -92,14 +92,14 @@ void LL_save_list_toFile(cell_t*, FILE *, void(*)(FILE*, monom_t*));
 
 cell_t** LL_search_prev(cell_t ** , cell_t* , int (*)(monom_t* , monom_t*));
 
-/** TO DO
+/** 
  * @brief Delete a cell from a linked list
  * @param [in, out] xxx address of the previous pointer of the cell to delete
  */
 void LL_del_cell(cell_t** previous);
 
 
-/** TO DO
+/** 
  * @brief Free the memory location occupied by the cells of a linked list
  * @param [in, out] xxx address of head pointer of a linked list
  */

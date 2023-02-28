@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdio.h>
 
-/** TO DO
+/** 
  * @struct monom_t 
  * @brief Data structure of monomial (value of linked list's cell)
  * 2 fields :
@@ -25,7 +25,7 @@ typedef struct monom_t
 } monom_t;
 
 
-/** TO DO
+/** 
  * @brief Compare the degree of two monomials
  * @param [in] xxx address of the first monomial
  * @param [in] xxx address of the second monomial
@@ -36,7 +36,7 @@ typedef struct monom_t
 
 int monom_degree_cmp(monom_t* , monom_t*);
 
-/** TO DO
+/** 
  * @brief write the information of a monomial to the given output stream
  * @param [in] xxx file pointer of an output stream
  * @param [in] xxx address of a monomial
