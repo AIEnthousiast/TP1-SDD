@@ -47,7 +47,6 @@ void LL_add_cell(cell_t** previous, cell_t* newCell)
 {
     newCell->next = *previous;
     *previous = newCell;
-    previous = &newCell;
 
 }
 
